@@ -1,0 +1,100 @@
+[
+  {
+    "id": "android-mastery",
+    "folder": "courses/android-mastery",
+    "title": "Android 开发高手课",
+    "shortTitle": "Android",
+    "glyph": "A",
+    "kicker": "Android Mastery",
+    "subtitle": "由表及里，给你的 App“把把脉”",
+    "author": "张绍文",
+    "lessonAuthor": "张绍文",
+    "authorTitle": "前微信高级工程师，Tinker 负责人",
+    "category": "移动开发",
+    "status": "已完结",
+    "totalLessons": 62,
+    "availableLessons": 61,
+    "students": "5.3w",
+    "accent": "#b9ed86",
+    "introUrl": "https://time.geekbang.org/column/intro/100021101",
+    "summary": "一门为 Android 开发者量身定制的进阶课程，从高质量应用、高效开发到架构演进，系统建立解决复杂工程问题的思路与方法。",
+    "benefits": [
+      "崩溃、卡顿、耗电等常见问题解法",
+      "内存、I/O、网络、存储的优化思路",
+      "提升 App 开发效率的实战技巧",
+      "跨平台开发和新技术案例解读"
+    ],
+    "audience": [
+      "希望突破业务开发瓶颈的 Android 工程师",
+      "正在负责应用性能、稳定性和质量建设的开发者",
+      "希望理解移动架构演进与技术选型的技术负责人"
+    ],
+    "modules": [
+      {
+        "number": "01",
+        "title": "高质量开发",
+        "description": "聚焦崩溃、内存、卡顿、启动、I/O、存储、网络、耗电、UI 与安装包体积，梳理性能优化的分析方法和解决方案。"
+      },
+      {
+        "number": "02",
+        "title": "高效开发",
+        "description": "覆盖编译 CI、测试、灰度与发布，讨论跨平台开发、动态部署以及技术如何真正赋能业务。"
+      },
+      {
+        "number": "03",
+        "title": "架构演进",
+        "description": "从原理与架构出发理解复杂技术，建立架构演进和选型的判断框架，帮助个人与团队少走弯路。"
+      }
+    ],
+    "authorBio": "张绍文，前微信高级工程师，负责微信 APM 质量平台和 DevOps 建设。作为腾讯 GitHub 首个开源项目 Tinker 的负责人，长期推动技术分享与开放，并建立、运营微信公众号 WeMobileDev。"
+  },
+  {
+    "id": "flutter-core",
+    "folder": "courses/flutter-core",
+    "title": "Flutter 核心技术与实战",
+    "shortTitle": "Flutter",
+    "glyph": "F",
+    "kicker": "Flutter Core",
+    "subtitle": "系统掌握 Flutter 跨平台开发的核心技术与工程实践",
+    "author": "陈航",
+    "lessonAuthor": "陈航",
+    "authorTitle": "资深移动开发工程师",
+    "category": "移动开发",
+    "status": "已完结",
+    "totalLessons": 46,
+    "availableLessons": 46,
+    "students": "2.7w",
+    "accent": "#79d7ff",
+    "introUrl": "https://time.geekbang.org/column/intro/100031001",
+    "summary": "一门面向大前端与移动开发者的 Flutter 实战课程，从 Dart 基础、Widget、动画、平台集成到混合开发与工程化，系统建立跨平台开发能力。",
+    "benefits": [
+      "理解 Flutter 的跨平台机制与运行模型",
+      "掌握 Dart、Widget、布局、动画和路由等核心能力",
+      "学习网络、存储、平台通道、状态管理等工程实践",
+      "建立混合开发、质量监控和发布体系的实战方法"
+    ],
+    "audience": [
+      "希望系统学习 Flutter 的移动端和大前端开发者",
+      "需要在原生应用中引入 Flutter 的工程师",
+      "关注跨平台技术选型、工程化和线上质量的技术负责人"
+    ],
+    "modules": [
+      {
+        "number": "01",
+        "title": "入门与 Dart 基础",
+        "description": "从环境搭建、跨平台方案演进和 Dart 语言基础开始，建立 Flutter 开发的基本认知。"
+      },
+      {
+        "number": "02",
+        "title": "Flutter 基础能力",
+        "description": "围绕 Widget、State、生命周期、布局、主题、依赖管理、事件与路由，掌握界面开发主线。"
+      },
+      {
+        "number": "03",
+        "title": "进阶与工程实践",
+        "description": "覆盖动画、网络、存储、平台通道、状态管理、国际化、性能、测试、混合开发和发布体系。"
+      }
+    ],
+    "authorBio": "陈航，长期从事移动端和跨平台开发实践，关注 Flutter 技术体系、工程化落地与移动应用质量建设。"
+  }
+]

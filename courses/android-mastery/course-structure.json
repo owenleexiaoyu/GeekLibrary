@@ -1,0 +1,299 @@
+{
+  "id": "android-mastery",
+  "title": "Android 开发高手课",
+  "introUrl": "https://time.geekbang.org/column/intro/100021101",
+  "sections": [
+    {
+      "id": "android-mastery-section-01",
+      "title": "开篇词",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-01-01",
+          "title": "开篇词丨焦虑的移动开发者该如何破局？"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-02",
+      "title": "导读",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-02-01",
+          "title": "导读丨如何打造高质量的应用？"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-03",
+      "title": "模块一 高质量开发",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-03-01",
+          "title": "崩溃优化（上）：关于“崩溃”那些事儿"
+        },
+        {
+          "id": "android-mastery-chapter-03-02",
+          "title": "崩溃优化（下）：应用崩溃了，你应该如何去分析？"
+        },
+        {
+          "id": "android-mastery-chapter-03-03",
+          "title": "内存优化（上）：4GB内存时代，再谈内存优化"
+        },
+        {
+          "id": "android-mastery-chapter-03-04",
+          "title": "内存优化（下）：内存优化这件事，应该从哪里着手？"
+        },
+        {
+          "id": "android-mastery-chapter-03-05",
+          "title": "卡顿优化（上）：你要掌握的卡顿分析方法"
+        },
+        {
+          "id": "android-mastery-chapter-03-06",
+          "title": "卡顿优化（下）：如何监控应用卡顿？"
+        },
+        {
+          "id": "android-mastery-chapter-03-07",
+          "title": "补充篇丨卡顿优化：卡顿现场与卡顿分析"
+        },
+        {
+          "id": "android-mastery-chapter-03-08",
+          "title": "启动优化（上）：从启动过程看启动速度优化"
+        },
+        {
+          "id": "android-mastery-chapter-03-09",
+          "title": "启动优化（下）：优化启动速度的进阶方法"
+        },
+        {
+          "id": "android-mastery-chapter-03-10",
+          "title": "I-O优化（上）：开发工程师必备的I-O优化知识"
+        },
+        {
+          "id": "android-mastery-chapter-03-11",
+          "title": "I-O优化（中）：不同I-O方式的使用场景是什么？"
+        },
+        {
+          "id": "android-mastery-chapter-03-12",
+          "title": "I-O优化（下）：如何监控线上I-O操作？"
+        },
+        {
+          "id": "android-mastery-chapter-03-13",
+          "title": "存储优化（上）：常见的数据存储方法有哪些？"
+        },
+        {
+          "id": "android-mastery-chapter-03-14",
+          "title": "存储优化（中）：如何优化数据存储？"
+        },
+        {
+          "id": "android-mastery-chapter-03-15",
+          "title": "存储优化（下）：数据库SQLite的使用和优化"
+        },
+        {
+          "id": "android-mastery-chapter-03-16",
+          "title": "网络优化（上）：移动开发工程师必备的网络优化知识"
+        },
+        {
+          "id": "android-mastery-chapter-03-17",
+          "title": "网络优化（中）：复杂多变的移动网络该如何优化？"
+        },
+        {
+          "id": "android-mastery-chapter-03-18",
+          "title": "网络优化（下）：大数据下网络该如何监控？"
+        },
+        {
+          "id": "android-mastery-chapter-03-19",
+          "title": "耗电优化（上）：从电量优化的演进看耗电分析"
+        },
+        {
+          "id": "android-mastery-chapter-03-20",
+          "title": "耗电优化（下）：耗电的优化方法与线上监控"
+        },
+        {
+          "id": "android-mastery-chapter-03-21",
+          "title": "UI 优化（上）：UI 渲染的几个关键概念"
+        },
+        {
+          "id": "android-mastery-chapter-03-22",
+          "title": "UI 优化（下）：如何优化 UI 渲染？"
+        },
+        {
+          "id": "android-mastery-chapter-03-23",
+          "title": "包体积优化（上）：如何减少安装包大小？"
+        },
+        {
+          "id": "android-mastery-chapter-03-24",
+          "title": "包体积优化（下）：资源优化的进阶实践"
+        },
+        {
+          "id": "android-mastery-chapter-03-25",
+          "title": "想成为Android高手，你需要先搞定这三个问题"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-04",
+      "title": "模块二 高效开发",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-04-01",
+          "title": "如何提升组织与个人的研发效能？"
+        },
+        {
+          "id": "android-mastery-chapter-04-02",
+          "title": "关于编译，你需要了解什么？"
+        },
+        {
+          "id": "android-mastery-chapter-04-03",
+          "title": "编译插桩的三种方法：AspectJ、ASM、ReDex"
+        },
+        {
+          "id": "android-mastery-chapter-04-04",
+          "title": "大数据与AI，如何高效地测试？"
+        },
+        {
+          "id": "android-mastery-chapter-04-05",
+          "title": "从每月到每天，如何给版本发布提速？"
+        },
+        {
+          "id": "android-mastery-chapter-04-06",
+          "title": "数据评估（上）：如何实现高可用的上报组件？"
+        },
+        {
+          "id": "android-mastery-chapter-04-07",
+          "title": "数据评估（下）：什么是大数据平台？"
+        },
+        {
+          "id": "android-mastery-chapter-04-08",
+          "title": "线上疑难问题该如何排查和跟踪？"
+        },
+        {
+          "id": "android-mastery-chapter-04-09",
+          "title": "做一名有高度的移动开发工程师"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-05",
+      "title": "模块三 架构演进",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-05-01",
+          "title": "聊聊重构：优秀的架构都是演进而来的"
+        },
+        {
+          "id": "android-mastery-chapter-05-02",
+          "title": "Native Hook 技术，天使还是魔鬼？"
+        },
+        {
+          "id": "android-mastery-chapter-05-03",
+          "title": "跨平台开发的现状与应用"
+        },
+        {
+          "id": "android-mastery-chapter-05-04",
+          "title": "移动开发新大陆：工作三年半，移动开发转型手游开发"
+        },
+        {
+          "id": "android-mastery-chapter-05-05",
+          "title": "移动开发新大陆：Android音视频开发"
+        },
+        {
+          "id": "android-mastery-chapter-05-06",
+          "title": "移动开发新大陆： 边缘智能计算的趋势"
+        },
+        {
+          "id": "android-mastery-chapter-05-07",
+          "title": "动态化实践，如何选择适合自己的方案？"
+        },
+        {
+          "id": "android-mastery-chapter-05-08",
+          "title": "聊聊Flutter，面对层出不穷的新技术该如何跟进？"
+        },
+        {
+          "id": "android-mastery-chapter-05-09",
+          "title": "Android开发高手课学习心得"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-06",
+      "title": "练习Sample跑起来",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-06-01",
+          "title": "练习Sample跑起来丨热点问题答疑第1期"
+        },
+        {
+          "id": "android-mastery-chapter-06-02",
+          "title": "练习Sample跑起来丨热点问题答疑第2期"
+        },
+        {
+          "id": "android-mastery-chapter-06-03",
+          "title": "练习Sample跑起来丨热点问题答疑第3期"
+        },
+        {
+          "id": "android-mastery-chapter-06-04",
+          "title": "练习Sample跑起来丨热点问题答疑第4期"
+        },
+        {
+          "id": "android-mastery-chapter-06-05",
+          "title": "练习Sample跑起来丨唯鹿同学的练习手记 第1辑"
+        },
+        {
+          "id": "android-mastery-chapter-06-06",
+          "title": "练习Sample跑起来丨唯鹿同学的练习手记 第2辑"
+        },
+        {
+          "id": "android-mastery-chapter-06-07",
+          "title": "练习Sample跑起来丨唯鹿同学的练习手记 第3辑"
+        },
+        {
+          "id": "android-mastery-chapter-06-08",
+          "title": "练习Sample跑起来丨ASM插桩强化练习"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-07",
+      "title": "特别放送",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-07-01",
+          "title": "专栏学得苦？可能是方法没找对"
+        },
+        {
+          "id": "android-mastery-chapter-07-02",
+          "title": "专栏学得苦？可能你还需要一份配套学习书单"
+        },
+        {
+          "id": "android-mastery-chapter-07-03",
+          "title": "聊聊Framework的学习方法"
+        },
+        {
+          "id": "android-mastery-chapter-07-04",
+          "title": "Native下如何获取调用栈？"
+        },
+        {
+          "id": "android-mastery-chapter-07-05",
+          "title": "Android JVM TI机制详解（内含福利彩蛋）"
+        },
+        {
+          "id": "android-mastery-chapter-07-06",
+          "title": "Android工程师的“面试指南”"
+        },
+        {
+          "id": "android-mastery-chapter-07-07",
+          "title": "程序员修炼之路丨设计能力的提升途径"
+        }
+      ]
+    },
+    {
+      "id": "android-mastery-section-08",
+      "title": "结束语",
+      "chapters": [
+        {
+          "id": "android-mastery-chapter-08-01",
+          "title": "结束语丨移动开发的今天和明天"
+        }
+      ]
+    }
+  ]
+}

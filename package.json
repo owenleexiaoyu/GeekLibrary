@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "add-course": "node add-course.js",
+    "build": "node build-site.js && node build-library.js",
+    "serve": "npx --yes serve . -l 4173"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  }
+}
