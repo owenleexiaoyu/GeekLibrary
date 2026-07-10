@@ -36,6 +36,19 @@ search?.addEventListener("input", () => {
   document.querySelectorAll(".nav-lessons a").forEach(a => a.hidden = !!q && !a.dataset.title.includes(q));
   document.querySelectorAll(".nav-section").forEach(s => s.hidden = !s.querySelector(".nav-lessons a:not([hidden])"));
 });
+const outlineLinks = [...document.querySelectorAll(".article-outline a")];
+if (outlineLinks.length && "IntersectionObserver" in window) {
+  const seen = new Set();
+  const activate = id => {
+    outlineLinks.forEach(link => link.classList.toggle("active", link.getAttribute("href") === `#${id}`));
+  };
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => entry.isIntersecting ? seen.add(entry.target.id) : seen.delete(entry.target.id));
+    const current = [...seen][0] || entries.find(entry => entry.isIntersecting)?.target.id;
+    if (current) activate(current);
+  }, { rootMargin: "-20% 0px -65% 0px", threshold: 0.01 });
+  document.querySelectorAll(".article-content h2[id],.article-content h3[id],.article-content h4[id]").forEach(heading => observer.observe(heading));
+}
 addEventListener("keydown", e => {
   if (e.key === "Escape") setMenu(false);
   if (e.key === "/" && document.activeElement !== search) { e.preventDefault(); search?.focus(); }

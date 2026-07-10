@@ -15,6 +15,7 @@ const text = value => String(value || "").replace(/\s+/g, " ").trim();
 const esc = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 const digest = value => crypto.createHash("sha1").update(value).digest("hex");
 const slug = lesson => `${lesson.id}.html`;
+const anchorId = value => `outline-${digest(value).slice(0, 8)}`;
 
 function readJson(file, fallback) {
   try {
@@ -54,11 +55,86 @@ function resolveSourcePath(course, sourceMap) {
   return path.resolve(projectRoot, configured);
 }
 
-function readStructure(course) {
+function sourceSectionTitle(name) {
+  return text(name)
+    .replace(/^\d+[-_、.\s]*/, "")
+    .replace(/\s*\(\d+讲\)\s*$/, "");
+}
+
+function sourceOrder(name) {
+  const number = name.match(/^(\d+)/);
+  return number ? Number(number[1]) : 999;
+}
+
+function chapterOrder(name) {
+  const number = path.basename(name).match(/^(\d+)/);
+  return number ? Number(number[1]) : 900;
+}
+
+function generateStructure(course, sourceRoot) {
+  const sections = fs.readdirSync(sourceRoot, { withFileTypes: true })
+    .filter(entry => entry.isDirectory() && !entry.name.startsWith("."))
+    .sort((a, b) => sourceOrder(a.name) - sourceOrder(b.name) || a.name.localeCompare(b.name, "zh-Hans-CN", { numeric: true }))
+    .map((section, sectionIndex) => {
+      const sectionNumber = String(sectionIndex + 1).padStart(2, "0");
+      const sectionPath = path.join(sourceRoot, section.name);
+      const chapters = new Map();
+      fs.readdirSync(sectionPath, { withFileTypes: true })
+        .filter(entry => entry.isFile() && !entry.name.startsWith("."))
+        .filter(entry => ["html", "pdf", "m4a", "mp3", "wav", "aac"].includes(path.extname(entry.name).slice(1).toLowerCase()))
+        .forEach(entry => {
+          const title = cleanTitle(entry.name);
+          const key = normalizeTitle(title);
+          if (!key || chapters.has(key)) return;
+          chapters.set(key, {
+            order: chapterOrder(entry.name),
+            title
+          });
+        });
+      return {
+        id: `${course.id}-section-${sectionNumber}`,
+        title: sourceSectionTitle(section.name),
+        chapters: [...chapters.values()]
+          .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title, "zh-Hans-CN", { numeric: true }))
+          .map((chapter, chapterIndex) => ({
+            id: `${course.id}-chapter-${sectionNumber}-${String(chapterIndex + 1).padStart(2, "0")}`,
+            title: chapter.title
+          }))
+      };
+    })
+    .filter(section => section.chapters.length);
+  return {
+    id: course.id,
+    title: course.title,
+    introUrl: course.introUrl,
+    sections
+  };
+}
+
+function normalizeStructure(structure) {
+  return {
+    ...structure,
+    sections: (structure.sections || []).map(section => ({
+      ...section,
+      chapters: (section.chapters || []).filter(chapter => !/\.mp4$/i.test(chapter.title || ""))
+    })).filter(section => section.chapters.length)
+  };
+}
+
+function readStructure(course, sourceRoot) {
   const file = path.join(projectRoot, course.folder, "course-structure.json");
   const structure = readJson(file, null);
-  if (!structure?.sections?.length) throw new Error(`Missing course structure: ${file}`);
-  return structure;
+  if (structure?.sections?.length) {
+    const normalized = normalizeStructure(structure);
+    if (JSON.stringify(normalized) !== JSON.stringify(structure)) writeIfChanged(file, `${JSON.stringify(normalized, null, 2)}\n`);
+    return normalized;
+  }
+  if (!sourceRoot || !fs.existsSync(sourceRoot)) throw new Error(`Missing course structure: ${file}`);
+  const generated = generateStructure(course, sourceRoot);
+  if (!generated.sections.length) throw new Error(`Missing course structure and no source chapters found: ${file}`);
+  writeIfChanged(file, `${JSON.stringify(generated, null, 2)}\n`);
+  console.warn(`Generated missing course structure: ${file}`);
+  return generated;
 }
 
 function normalizeTitle(value) {
@@ -121,11 +197,37 @@ function removePromos($, article) {
   });
 }
 
+function cleanCodeText(value) {
+  return String(value || "")
+    .replace(/\r/g, "")
+    .replace(/\u00a0/g, " ")
+    .replace(/复制代码/g, "")
+    .split("\n")
+    .map(line => line.replace(/[ \t]+$/g, ""))
+    .join("\n")
+    .replace(/^\n+|\n+$/g, "");
+}
+
+function slateCodeText($, block) {
+  const lines = block.find('[data-slate-type="code-line"]').map((_, line) => $(line).text()).get();
+  return cleanCodeText(lines.length ? lines.join("\n") : block.text());
+}
+
+function normalizeSlateCodeBlocks($, article) {
+  article.find('[data-slate-type="pre"]').each((_, element) => {
+    const block = $(element);
+    const code = slateCodeText($, block);
+    if (!code) return;
+    block.replaceWith($("<pre></pre>").append($("<code></code>").text(code)));
+  });
+}
+
 function cleanArticle($, article, title, key, assetsDir) {
   removePromos($, article);
+  normalizeSlateCodeBlocks($, article);
   article.find("pre").each((_, element) => {
     const block = $(element);
-    const code = text(block.find("code").first().text() || block.text().replace(/复制代码/g, ""));
+    const code = cleanCodeText(block.find("code").first().text() || block.text());
     block.empty().append($("<code></code>").text(code));
   });
 
@@ -161,7 +263,11 @@ function parseHtmlLesson(course, chapter, htmlFile, assetsDir, sourceRoot) {
   const key = path.relative(sourceRoot, htmlFile);
   const $ = cheerio.load(source);
   const title = chapter.title || cleanTitle($("h1").first().text()) || cleanTitle(path.basename(htmlFile));
-  const article = $("._3IatBmhv_0").first();
+  const article = $("._3IatBmhv_0").first().length
+    ? $("._3IatBmhv_0").first()
+    : $('[class*="SlateRichContent_main"]').first().length
+      ? $('[class*="SlateRichContent_main"]').first()
+      : $('[class*="articleContent"]').first();
   if (!article.length) return null;
 
   const assets = cleanArticle($, article, title, key, assetsDir);
@@ -261,6 +367,10 @@ function isSentenceEnd(line) {
   return /[。！？；：:）)]$/.test(line) || /^图\s*\d+/.test(line);
 }
 
+function isCodeLine(line) {
+  return /^(\s{2,}|\}|\)|\/\/|\/\*|\*|import |class |void |Widget |@override|return |const |new |final |var |val |fun |if\s*\(|else\b|for\s*\(|while\s*\(|when\s*\(|[A-Za-z_][\w.]*\s*[=:]\s|export |flutter |open -a |git |cd |mkdir |sudo |brew |pub |PATH=|[A-Z_]+=)/.test(line);
+}
+
 function pdfLinesToBlocks(lines) {
   const blocks = [];
   let paragraph = "";
@@ -279,11 +389,14 @@ function pdfLinesToBlocks(lines) {
   for (const line of lines) {
     const cleanedCodeLine = line.replace(/^([信微课拼])+/, "");
     const numberedCode = cleanedCodeLine.match(/^\d+\s+(.+)$/);
-    const commandLike = /^(export |flutter |open -a |git |cd |mkdir |sudo |brew |pub |PATH=|[A-Z_]+=)/.test(cleanedCodeLine);
-    if (numberedCode || (codeMode && commandLike)) {
+    const commandLike = /^(export |flutter\s+(run|doctor|emulators|pub|build|create|packages|upgrade|config|devices|clean|test|analyze|attach|install|logs)\b|open -a |git |cd |mkdir |sudo |brew |pub |PATH=|[A-Z_]+=)/.test(cleanedCodeLine);
+    const numberedCodeText = numberedCode?.[1] || "";
+    const likelyNumberedCode = numberedCode && (codeMode || isCodeLine(numberedCodeText));
+    const likelyCode = commandLike || (codeMode && isCodeLine(cleanedCodeLine));
+    if (likelyNumberedCode || likelyCode) {
       flushParagraph();
       codeMode = true;
-      const codeText = (numberedCode ? numberedCode[1] : cleanedCodeLine)
+      const codeText = (likelyNumberedCode ? numberedCodeText : cleanedCodeLine)
         .replace(/^[信微课拼]+(?=export|flutter|open -a|git|cd|mkdir|sudo|brew|pub|PATH=|[A-Z_]+=)/, "");
       code.push(codeText);
       continue;
@@ -352,10 +465,14 @@ function buildLessons(course, sourceRoot, structure, assetsDir, outputDir) {
     for (const chapter of section.chapters) {
       const sources = findSource(index, chapter);
       let parsed = null;
-      if (sources.html) parsed = parseHtmlLesson(course, chapter, sources.html, assetsDir, sourceRoot);
-      if (!parsed && sources.pdf) parsed = parsePdfLesson(chapter, sources.pdf);
+      if (sources.html) {
+        parsed = parseHtmlLesson(course, chapter, sources.html, assetsDir, sourceRoot);
+        if (!parsed) missing.push(`${chapter.title}（HTML 解析失败）`);
+      } else if (sources.pdf) {
+        parsed = parsePdfLesson(chapter, sources.pdf);
+      }
       if (!parsed) {
-        missing.push(chapter.title);
+        if (!sources.html) missing.push(chapter.title);
         parsed = {
           title: chapter.title,
           date: "",
@@ -400,15 +517,33 @@ function commentCards(items) {
   return items.map(comment => `<article class="comment"><div class="avatar">${esc(comment.name.slice(0, 1).toUpperCase())}</div><div class="comment-body"><header><strong>${esc(comment.name)}</strong><span>${esc(comment.date)}</span>${comment.likes ? `<span class="likes">♡ ${esc(comment.likes)}</span>` : ""}</header><p>${esc(comment.content)}</p></div></article>`).join("");
 }
 
+function articleContentWithOutline(content) {
+  const $ = cheerio.load(`<div id="article-root">${content}</div>`, null, false);
+  const headings = [];
+  $("#article-root").find("h2,h3,h4").each((_, element) => {
+    const node = $(element);
+    const title = text(node.text());
+    if (!title) return;
+    const id = anchorId(`${title}-${headings.length}`);
+    node.attr("id", id);
+    headings.push({ id, title, level: element.name });
+  });
+  const html = $("#article-root").html();
+  if (!headings.length) return { html, outline: `<p class="outline-empty">本文暂无小标题</p>` };
+  const outline = `<nav class="article-outline" aria-label="文章大纲"><h2>文章大纲</h2>${headings.map(item => `<a class="outline-${item.level}" href="#${item.id}">${esc(item.title)}</a>`).join("")}</nav>`;
+  return { html, outline };
+}
+
 function page(course, lessons, lesson, index, structure) {
   const prev = lessons[index - 1];
   const next = lessons[index + 1];
   const shortTitle = lesson.title.replace(/\s*[|丨]\s*/g, " · ");
+  const article = articleContentWithOutline(lesson.content);
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${esc(lesson.title)}"><title>${esc(lesson.title)} · ${esc(course.title)}</title><link rel="stylesheet" href="assets/style.css"></head><body>
-<div class="reading-progress"></div><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">${esc(course.glyph || course.title.slice(0, 1))}</span><span><b>${esc(course.shortTitle || course.title)}</b><small>${esc(course.subtitle || "")}</small></span></a><label class="search"><span>⌕</span><input id="lesson-search" type="search" placeholder="搜索章节" aria-label="搜索章节"></label><nav>${sidebar(course, lessons, index, structure)}</nav><footer><span class="status-dot"></span>离线教程 · ${lessons.length} 章</footer></aside>
+<div class="reading-progress"></div><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">${esc(course.glyph || course.title.slice(0, 1))}</span><span><b>${esc(course.shortTitle || course.title)}</b><small>${esc(course.subtitle || "")}</small></span></a><a class="home-link" href="../../../index.html">← 返回网站首页</a><label class="search"><span>⌕</span><input id="lesson-search" type="search" placeholder="搜索章节" aria-label="搜索章节"></label><nav>${sidebar(course, lessons, index, structure)}</nav><footer><span class="status-dot"></span>离线教程 · ${lessons.length} 章</footer></aside>
 <button class="menu-button" type="button" aria-label="打开章节目录" aria-expanded="false">☰</button><button class="scrim" type="button" aria-label="关闭章节目录"></button>
 <main><div class="topline"><span>${esc(lesson.section)}</span><span>第 ${index + 1} / ${lessons.length} 章</span></div><article class="lesson"><header class="lesson-header"><p class="eyebrow">${esc((course.kicker || course.title).toUpperCase())} · LESSON ${String(index + 1).padStart(2, "0")}</p><h1>${esc(shortTitle)}</h1><div class="meta"><span>${esc(course.lessonAuthor || course.author || "")}</span>${lesson.date ? `<span>${esc(lesson.date)}</span>` : ""}<span>约 ${lesson.minutes} 分钟</span></div></header>
-<div class="article-content">${lesson.content}</div><nav class="pager" aria-label="章节导航">${prev ? `<a href="${slug(prev)}"><small>← 上一章</small><strong>${esc(prev.title)}</strong></a>` : `<span></span>`}${next ? `<a class="next" href="${slug(next)}"><small>下一章 →</small><strong>${esc(next.title)}</strong></a>` : `<span></span>`}</nav>
+<div class="lesson-layout"><aside class="outline-wrap">${article.outline}</aside><div class="article-content">${article.html}</div></div><nav class="pager" aria-label="章节导航">${prev ? `<a href="${slug(prev)}"><small>← 上一章</small><strong>${esc(prev.title)}</strong></a>` : `<span></span>`}${next ? `<a class="next" href="${slug(next)}"><small>下一章 →</small><strong>${esc(next.title)}</strong></a>` : `<span></span>`}</nav>
 <section class="comments"><header><div><p class="eyebrow">COMMUNITY NOTES</p><h2>读者评论</h2></div><span>${lesson.comments.length} 条</span></header>${commentCards(lesson.comments)}</section></article></main><button class="back-to-top" type="button" aria-label="回到顶部">↑</button><script src="assets/app.js"></script></body></html>`;
 }
 
@@ -423,7 +558,7 @@ function buildCourse(course, sourceRoot) {
   const output = path.join(projectRoot, course.folder, "site");
   const assets = path.join(output, "assets");
   fs.mkdirSync(assets, { recursive: true });
-  const structure = readStructure(course);
+  const structure = readStructure(course, sourceRoot);
   const { lessons, missing } = buildLessons(course, sourceRoot, structure, assets, output);
   let written = 0;
 

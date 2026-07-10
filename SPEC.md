@@ -34,6 +34,8 @@ Geek Library 是一个纯静态课程网站。项目仓库只保存网站代码�
 
 每门课程目录下必须有一份 `course-structure.json`，它是生成课程 HTML 产物的章节组织依据。
 
+如果新增课程时还没有这份文件，构建器可以先根据本地课程源文件夹自动生成一份初稿；初稿生成后应作为后续构建的依据，并允许人工 review 和调整章节顺序、分组、标题。
+
 文件位置：
 
 ```text
@@ -95,11 +97,11 @@ courses/<course-id>/site/index.html
 
 构建器根据 `course-structure.json` 的章节标题，在本地课程源目录中匹配对应源文件。
 
-匹配优先级：
+匹配规则：
 
-1. HTML
-2. PDF
-3. 音频作为章节附件
+1. 如果章节存在 HTML，只解析 HTML，不解析 PDF，也不使用 PDF 作为兜底。
+2. 只有章节不存在 HTML 时，才允许解析 PDF。
+3. 音频作为章节附件处理。
 
 ### HTML 章节
 
@@ -114,7 +116,7 @@ HTML 章节需要：
 
 ### PDF 章节
 
-如果某个章节没有 HTML，只有 PDF，也必须生成 HTML 页面。
+如果某个章节没有 HTML，只有 PDF，也必须生成 HTML 页面。只要匹配到了 HTML，即使同章节旁边也存在 PDF，也不能解析 PDF。
 
 PDF 转换要求：
 
@@ -212,7 +214,7 @@ GitHub 上不需要原始课程源文件，也不需要在线重新解析课程�
 
 ## 当前课程
 
-当前站点包含两门课程：
+当前站点包含三门课程：
 
 1. Android 开发高手课
    - 课程 id：`android-mastery`
@@ -227,6 +229,12 @@ GitHub 上不需要原始课程源文件，也不需要在线重新解析课程�
    - 当前章节数：46
    - 包含 PDF-only 章节
    - 包含音频章节
+
+3. 朱涛 · Kotlin编程第一课
+   - 课程 id：`kotlin-first-lesson`
+   - 课程首页地址：`https://time.geekbang.org/column/intro/100103401`
+   - 输出目录：`courses/kotlin-first-lesson`
+   - 当前章节数：49
 
 ## 构建与验证
 

@@ -96,5 +96,39 @@
       }
     ],
     "authorBio": "陈航，长期从事移动端和跨平台开发实践，关注 Flutter 技术体系、工程化落地与移动应用质量建设。"
+  },
+  {
+    "id": "kotlin-first-lesson",
+    "folder": "courses/kotlin-first-lesson",
+    "title": "朱涛 · Kotlin编程第一课",
+    "shortTitle": "朱涛 · Kotlin编程第一课",
+    "glyph": "K",
+    "kicker": "朱涛 · Kotlin编程第一课",
+    "subtitle": "待补充课程副标题",
+    "author": "待补充讲师",
+    "lessonAuthor": "待补充讲师",
+    "authorTitle": "待补充讲师介绍",
+    "category": "技术课程",
+    "status": "待整理",
+    "totalLessons": 0,
+    "availableLessons": 0,
+    "students": "-",
+    "accent": "#b9ed86",
+    "introUrl": "https://time.geekbang.org/column/intro/100103401",
+    "summary": "极客时间推出的朱涛 · Kotlin编程第一课是帮助互联网人学习编程、Kotlin、前端、移动、编程语言、Kotlin Jetpack、协程、Java、协程思维、高阶函数、面向对象相关知识的在线课程，极客时间是面向IT领域的知识服务产品，致力于帮助用户轻松学习，高效学习。",
+    "benefits": [
+      "待补充课程收获"
+    ],
+    "audience": [
+      "待补充适合人群"
+    ],
+    "modules": [
+      {
+        "number": "01",
+        "title": "课程正文",
+        "description": "待补充课程模块介绍。"
+      }
+    ],
+    "authorBio": "待补充讲师简介。"
   }
 ]
