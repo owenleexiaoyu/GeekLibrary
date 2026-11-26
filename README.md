@@ -79,3 +79,11 @@ courses/android-mastery/
 5. 保存后访问 GitHub Pages 给出的地址。
 
 因为原始课程 HTML 不在仓库里，GitHub 上不需要重新构建课程内容；它只负责托管已经生成好的静态站点。
+
+## Markdown 课程
+
+`mastering-llm-prompting` 保留原始 Markdown 和 `assets/` 配图，通过 `courses.json` 中的相对 `sourcePath` 直接构建，无需额外的本地路径配置。原始文件不会被改写，阅读页面生成在 `courses/mastering-llm-prompting/site/`，课程介绍页为该课程目录下的 `index.html`。
+
+课程信息依据 `0-小册介绍.md` 与开篇词整理，目录保留原文顺序：23 节正文、3 篇加餐及 1 篇小册介绍，共 27 篇可读内容。介绍文件中的“共计 23 节”指原正文，不含后续加餐和介绍。学习人数未提供，因此显示为 `-`。
+
+Markdown 构建支持标题、列表、引用、表格、代码块和本地配图。已有 `course-structure.json` 时按其分组与顺序生成；没有时可自动识别源目录根层的 `.md` 文件。运行 `node --test tests/markdown-course.test.js` 可验证 Markdown 构建行为。

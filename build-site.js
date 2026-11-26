@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const os = require("os");
 const { execFileSync } = require("child_process");
 const cheerio = require("cheerio");
+const markdown = require("markdown-it")({ html: false });
 
 const projectRoot = __dirname;
 const courses = require("./courses.json");
@@ -81,7 +82,7 @@ function generateStructure(course, sourceRoot) {
       const chapters = new Map();
       fs.readdirSync(sectionPath, { withFileTypes: true })
         .filter(entry => entry.isFile() && !entry.name.startsWith("."))
-        .filter(entry => ["html", "pdf", "m4a", "mp3", "wav", "aac"].includes(path.extname(entry.name).slice(1).toLowerCase()))
+        .filter(entry => ["html", "md", "pdf", "m4a", "mp3", "wav", "aac"].includes(path.extname(entry.name).slice(1).toLowerCase()))
         .forEach(entry => {
           const title = cleanTitle(entry.name);
           const key = normalizeTitle(title);
@@ -103,12 +104,12 @@ function generateStructure(course, sourceRoot) {
       };
     })
     .filter(section => section.chapters.length);
-  return {
-    id: course.id,
-    title: course.title,
-    introUrl: course.introUrl,
-    sections
-  };
+  const rootChapters = fs.readdirSync(sourceRoot, { withFileTypes: true })
+    .filter(entry => entry.isFile() && /\.md$/i.test(entry.name))
+    .sort((a, b) => chapterOrder(a.name) - chapterOrder(b.name))
+    .map((entry, i) => ({ id: `${course.id}-chapter-00-${String(i + 1).padStart(2, "0")}`, title: cleanTitle(entry.name) }));
+  if (rootChapters.length) sections.unshift({ id: `${course.id}-section-00`, title: "课程正文", chapters: rootChapters });
+  return { id: course.id, title: course.title, introUrl: course.introUrl, sections };
 }
 
 function normalizeStructure(structure) {
@@ -139,7 +140,7 @@ function readStructure(course, sourceRoot) {
 
 function normalizeTitle(value) {
   return text(value)
-    .replace(/\.(html|pdf|m4a|mp3|wav|aac)$/i, "")
+    .replace(/\.(html|md|pdf|m4a|mp3|wav|aac)$/i, "")
     .replace(/^0*\d+\s*[丨|｜·、.\-]?\s*/, "")
     .replace(/\s+/g, "")
     .replace(/[?？!！:：,，。、“”"'\-—·]/g, "")
@@ -148,7 +149,7 @@ function normalizeTitle(value) {
 
 function cleanTitle(value) {
   return text(value)
-    .replace(/\.(html|pdf|m4a|mp3|wav|aac)$/i, "")
+    .replace(/\.(html|md|pdf|m4a|mp3|wav|aac)$/i, "")
     .replace(/^0*\d+\s*[丨|｜·、.\-]?\s*/, "");
 }
 
@@ -157,7 +158,7 @@ function sourceIndex(sourceRoot) {
   for (const file of walk(sourceRoot)) {
     if (file.includes(`${path.sep}site${path.sep}`)) continue;
     const ext = path.extname(file).slice(1).toLowerCase();
-    if (!["html", "pdf", "m4a", "mp3", "wav", "aac"].includes(ext)) continue;
+    if (!["html", "md", "pdf", "m4a", "mp3", "wav", "aac"].includes(ext)) continue;
     const key = normalizeTitle(path.basename(file));
     if (!map.has(key)) map.set(key, {});
     map.get(key)[ext === "m4a" || ext === "mp3" || ext === "wav" || ext === "aac" ? "audio" : ext] = file;
@@ -294,6 +295,26 @@ function parseHtmlLesson(course, chapter, htmlFile, assetsDir, sourceRoot) {
     minutes: Math.max(2, Math.round(text(article.text()).length / 450)),
     assets
   };
+}
+
+function parseMarkdownLesson(chapter, file, assetsDir, sourceRoot) {
+  const $ = cheerio.load(markdown.render(fs.readFileSync(file, "utf8")), null, false);
+  const assets = [];
+  $("img").each((_, element) => {
+    const node = $(element);
+    const src = node.attr("src") || "";
+    if (src && !/^(?:[a-z]+:|\/\/|#)/i.test(src)) {
+      const local = path.resolve(path.dirname(file), decodeURIComponent(src));
+      const relative = path.relative(sourceRoot, local);
+      if (relative.startsWith("..") || path.isAbsolute(relative)) throw new Error(`Image outside course: ${src}`);
+      const name = `${digest(relative).slice(0, 10)}${path.extname(local)}`;
+      writeIfChanged(path.join(assetsDir, name), fs.readFileSync(local));
+      node.attr("src", `assets/${name}`);
+      assets.push(`assets/${name}`);
+    }
+    node.attr("loading", "lazy");
+  });
+  return { title: chapter.title, date: "", content: $.html(), comments: [], minutes: Math.max(2, Math.round(text($.text()).length / 450)), assets };
 }
 
 function pdfToHtml(pdfFile, title) {
@@ -468,6 +489,8 @@ function buildLessons(course, sourceRoot, structure, assetsDir, outputDir) {
       if (sources.html) {
         parsed = parseHtmlLesson(course, chapter, sources.html, assetsDir, sourceRoot);
         if (!parsed) missing.push(`${chapter.title}（HTML 解析失败）`);
+      } else if (sources.md) {
+        parsed = parseMarkdownLesson(chapter, sources.md, assetsDir, sourceRoot);
       } else if (sources.pdf) {
         parsed = parsePdfLesson(chapter, sources.pdf);
       }
@@ -476,7 +499,7 @@ function buildLessons(course, sourceRoot, structure, assetsDir, outputDir) {
         parsed = {
           title: chapter.title,
           date: "",
-          content: `<p class="empty-comments">未找到这个章节的 HTML 或 PDF 源文件。</p>`,
+          content: `<p class="empty-comments">未找到这个章节的 HTML、Markdown 或 PDF 源文件。</p>`,
           comments: [],
           minutes: 2,
           assets: []
