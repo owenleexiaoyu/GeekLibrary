@@ -71,3 +71,11 @@ npm run add-course -- --id example-course --source "/absolute/path/to/course" --
 ## 部署
 
 只发布 `dist/`。GitHub Pages 应使用 GitHub Actions 上传该目录，或将其内容发布到专用分支；不要再把仓库根目录直接作为站点。`dist/.nojekyll` 由构建生成。本次目录调整不会自动更改远端 Pages 设置。
+
+### GitHub Pages 工作流
+
+仓库提供 `.github/workflows/pages.yml`：推送到 main 或手动运行时，安装依赖、执行测试、构建，并仅上传 dist，随后部署 Pages。
+
+启用步骤：提交并推送工作流，在 GitHub 仓库 Settings → Pages → Build and deployment → Source 选择 **GitHub Actions**，再在 Actions 中运行 Deploy GitHub Pages。继续选择 main / (root) 会显示根目录 README，而不是 dist 首页。
+
+GitHub Pages 发布站点上限为 1 GB。目前完整站点约 1.40 GB，主要体积来自音频，因此工作流会在体积检查时给出明确错误。部署前需要缩减资源，或把音频迁移到其他存储并更新引用；工作流不会自动删除音频。

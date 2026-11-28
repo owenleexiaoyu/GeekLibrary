@@ -1,0 +1,62 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Check Pages size limit
+        run: |
+          node - <<'JS'
+          const fs = require('fs');
+          const path = require('path');
+          function size(dir) {
+            return fs.readdirSync(dir, { withFileTypes: true }).reduce((sum, entry) => {
+              const file = path.join(dir, entry.name);
+              return sum + (entry.isDirectory() ? size(file) : fs.statSync(file).size);
+            }, 0);
+          }
+          const bytes = size('dist');
+          console.log(`dist: ${bytes} bytes`);
+          if (bytes > 1_000_000_000) {
+            console.error('Site exceeds the GitHub Pages 1 GB limit. Reduce assets or host audio externally before deploying.');
+            process.exit(1);
+          }
+          JS
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
