@@ -1,0 +1,241 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="加餐五丨深入理解协程基础元素"><title>加餐五丨深入理解协程基础元素 · 朱涛 · Kotlin编程第一课</title><link rel="stylesheet" href="assets/style.css"></head><body>
+<div class="reading-progress"></div><aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark">K</span><span><b>朱涛 · Kotlin编程第一课</b><small>待补充课程副标题</small></span></a><a class="home-link" href="../../../index.html">← 返回网站首页</a><label class="search"><span>⌕</span><input id="lesson-search" type="search" placeholder="搜索章节" aria-label="搜索章节"></label><nav><section class="nav-section"><h2>开篇词<span>1</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-01-01.html" class="" data-title="开篇词丨入门kotlin有多容易，精通kotlin就有多难"><span>01</span><em>开篇词丨入门Kotlin有多容易，精通Kotlin就有多难</em></a></div></section><section class="nav-section"><h2>基础篇<span>16</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-02-01.html" class="" data-title="kotlin基础语法：正式开启学习之旅"><span>02</span><em>Kotlin基础语法：正式开启学习之旅</em></a><a href="kotlin-first-lesson-chapter-02-02.html" class="" data-title="面向对象：理解kotlin设计者的良苦用心"><span>03</span><em>面向对象：理解Kotlin设计者的良苦用心</em></a><a href="kotlin-first-lesson-chapter-02-03.html" class="" data-title="kotlin原理：编译器在幕后干了哪些“好事”？"><span>04</span><em>Kotlin原理：编译器在幕后干了哪些“好事”？</em></a><a href="kotlin-first-lesson-chapter-02-04.html" class="" data-title="实战：构建一个kotlin版本的四则运算计算器"><span>05</span><em>实战：构建一个Kotlin版本的四则运算计算器</em></a><a href="kotlin-first-lesson-chapter-02-05.html" class="" data-title="object关键字：你到底有多少种用法？"><span>06</span><em>object关键字：你到底有多少种用法？</em></a><a href="kotlin-first-lesson-chapter-02-06.html" class="" data-title="扩展：你的能力边界到底在哪里？"><span>07</span><em>扩展：你的能力边界到底在哪里？</em></a><a href="kotlin-first-lesson-chapter-02-07.html" class="" data-title="高阶函数：为什么说函数是kotlin的“一等公民”？"><span>08</span><em>高阶函数：为什么说函数是Kotlin的“一等公民”？</em></a><a href="kotlin-first-lesson-chapter-02-08.html" class="" data-title="实战：用kotlin写一个英语词频统计程序"><span>09</span><em>实战：用Kotlin写一个英语词频统计程序</em></a><a href="kotlin-first-lesson-chapter-02-09.html" class="" data-title="委托：你为何总是被低估？"><span>10</span><em>委托：你为何总是被低估？</em></a><a href="kotlin-first-lesson-chapter-02-10.html" class="" data-title="泛型：逆变or协变，傻傻分不清？"><span>11</span><em>泛型：逆变or协变，傻傻分不清？</em></a><a href="kotlin-first-lesson-chapter-02-11.html" class="" data-title="注解与反射：进阶必备技能"><span>12</span><em>注解与反射：进阶必备技能</em></a><a href="kotlin-first-lesson-chapter-02-12.html" class="" data-title="实战：用kotlin实现一个网络请求框架kthttp"><span>13</span><em>实战：用Kotlin实现一个网络请求框架KtHttp</em></a><a href="kotlin-first-lesson-chapter-02-13.html" class="" data-title="加餐二丨什么是“表达式思维”？"><span>14</span><em>加餐二丨什么是“表达式思维”？</em></a><a href="kotlin-first-lesson-chapter-02-14.html" class="" data-title="加餐三丨什么是“不变性思维”？"><span>15</span><em>加餐三丨什么是“不变性思维”？</em></a><a href="kotlin-first-lesson-chapter-02-15.html" class="" data-title="加餐四丨什么是“空安全思维”？"><span>16</span><em>加餐四丨什么是“空安全思维”？</em></a><a href="kotlin-first-lesson-chapter-02-16.html" class="" data-title="加餐一丨初识kotlin函数式编程"><span>17</span><em>加餐一丨初识Kotlin函数式编程</em></a></div></section><section class="nav-section"><h2>春节特别放送<span>4</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-03-01.html" class="" data-title="春节刷题计划（二）丨一题三解，搞定版本号判断"><span>18</span><em>春节刷题计划（二）丨一题三解，搞定版本号判断</em></a><a href="kotlin-first-lesson-chapter-03-02.html" class="" data-title="春节刷题计划（三）丨一题双解，搞定求解方程"><span>19</span><em>春节刷题计划（三）丨一题双解，搞定求解方程</em></a><a href="kotlin-first-lesson-chapter-03-03.html" class="" data-title="春节刷题计划（四）丨一题三解，搞定分式加减法"><span>20</span><em>春节刷题计划（四）丨一题三解，搞定分式加减法</em></a><a href="kotlin-first-lesson-chapter-03-04.html" class="" data-title="春节刷题计划（一）丨当kotlin遇上leetcode"><span>21</span><em>春节刷题计划（一）丨当Kotlin遇上LeetCode</em></a></div></section><section class="nav-section"><h2>协程篇<span>14</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-04-01.html" class="" data-title="什么是“协程思维模型”？"><span>22</span><em>什么是“协程思维模型”？</em></a><a href="kotlin-first-lesson-chapter-04-02.html" class="" data-title="如何启动协程？"><span>23</span><em>如何启动协程？</em></a><a href="kotlin-first-lesson-chapter-04-03.html" class="" data-title="挂起函数：kotlin协程的核心"><span>24</span><em>挂起函数：Kotlin协程的核心</em></a><a href="kotlin-first-lesson-chapter-04-05.html" class="" data-title="job：协程也有生命周期吗？"><span>25</span><em>Job：协程也有生命周期吗？</em></a><a href="kotlin-first-lesson-chapter-04-06.html" class="" data-title="context：万物皆为context？"><span>26</span><em>Context：万物皆为Context？</em></a><a href="kotlin-first-lesson-chapter-04-07.html" class="" data-title="实战：让kthttp支持挂起函数"><span>27</span><em>实战：让KtHttp支持挂起函数</em></a><a href="kotlin-first-lesson-chapter-04-08.html" class="" data-title="channel：为什么说channel是“热”的？"><span>28</span><em>Channel：为什么说Channel是“热”的？</em></a><a href="kotlin-first-lesson-chapter-04-09.html" class="" data-title="flow：为什么说flow是“冷”的？"><span>29</span><em>Flow：为什么说Flow是“冷”的？</em></a><a href="kotlin-first-lesson-chapter-04-10.html" class="" data-title="select：到底是在选择什么？"><span>30</span><em>Select：到底是在选择什么？</em></a><a href="kotlin-first-lesson-chapter-04-11.html" class="" data-title="并发：协程不需要处理同步吗？"><span>31</span><em>并发：协程不需要处理同步吗？</em></a><a href="kotlin-first-lesson-chapter-04-13.html" class="" data-title="异常：try-catch居然会不起作用？坑！"><span>32</span><em>异常：try-catch居然会不起作用？坑！</em></a><a href="kotlin-first-lesson-chapter-04-14.html" class="" data-title="实战：让kthttp支持flow"><span>33</span><em>实战：让KtHttp支持Flow</em></a><a href="kotlin-first-lesson-chapter-04-15.html" class="" data-title="期中考试丨用kotlin实现图片处理程序"><span>34</span><em>期中考试丨用Kotlin实现图片处理程序</em></a><a href="kotlin-first-lesson-chapter-04-16.html" class="" data-title="题目解答丨期中考试版本参考实现"><span>35</span><em>题目解答丨期中考试版本参考实现</em></a></div></section><section class="nav-section"><h2>源码篇<span>9</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-05-01.html" class="" data-title="集合操作符：你也会“看完就忘”吗？"><span>36</span><em>集合操作符：你也会“看完就忘”吗？</em></a><a href="kotlin-first-lesson-chapter-05-02.html" class="" data-title="协程源码的地图：如何读源码才不会迷失？"><span>37</span><em>协程源码的地图：如何读源码才不会迷失？</em></a><a href="kotlin-first-lesson-chapter-05-03.html" class="" data-title="图解挂起函数：原来你就是个状态机？"><span>38</span><em>图解挂起函数：原来你就是个状态机？</em></a><a href="kotlin-first-lesson-chapter-05-06.html" class="" data-title="launch的背后到底发生了什么？"><span>39</span><em>launch的背后到底发生了什么？</em></a><a href="kotlin-first-lesson-chapter-05-08.html" class="" data-title="dispatchers是如何工作的？"><span>40</span><em>Dispatchers是如何工作的？</em></a><a href="kotlin-first-lesson-chapter-05-10.html" class="" data-title="coroutinescope是如何管理协程的？"><span>41</span><em>CoroutineScope是如何管理协程的？</em></a><a href="kotlin-first-lesson-chapter-05-12.html" class="" data-title="图解channel：如何理解它的csp通信模型？"><span>42</span><em>图解Channel：如何理解它的CSP通信模型？</em></a><a href="kotlin-first-lesson-chapter-05-14.html" class="" data-title="图解flow：原来你是只纸老虎？"><span>43</span><em>图解Flow：原来你是只纸老虎？</em></a><a href="kotlin-first-lesson-chapter-05-16.html" class="active" data-title="加餐五丨深入理解协程基础元素"><span>44</span><em>加餐五丨深入理解协程基础元素</em></a></div></section><section class="nav-section"><h2>Android项目篇<span>3</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-06-01.html" class="" data-title="javaandroid开发者还会有未来吗？"><span>45</span><em>JavaAndroid开发者还会有未来吗？</em></a><a href="kotlin-first-lesson-chapter-06-02.html" class="" data-title="kotlin与jetpack简直是天生一对！"><span>46</span><em>Kotlin与Jetpack简直是天生一对！</em></a><a href="kotlin-first-lesson-chapter-06-03.html" class="" data-title="用kotlin写一个githubtrendingapp"><span>47</span><em>用Kotlin写一个GitHubTrendingApp</em></a></div></section><section class="nav-section"><h2>结束语<span>1</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-07-01.html" class="" data-title="结束语丨不忘初心"><span>48</span><em>结束语丨不忘初心</em></a></div></section><section class="nav-section"><h2>答疑篇<span>1</span></h2><div class="nav-lessons"><a href="kotlin-first-lesson-chapter-08-01.html" class="" data-title="答疑（一）丨java和kotlin到底谁好谁坏？"><span>49</span><em>答疑（一）丨Java和Kotlin到底谁好谁坏？</em></a></div></section></nav><footer><span class="status-dot"></span>离线教程 · 49 章</footer></aside>
+<button class="menu-button" type="button" aria-label="打开章节目录" aria-expanded="false">☰</button><button class="scrim" type="button" aria-label="关闭章节目录"></button>
+<main><div class="topline"><span>源码篇</span><span>第 44 / 49 章</span></div><article class="lesson"><header class="lesson-header"><p class="eyebrow">朱涛 · KOTLIN编程第一课 · LESSON 44</p><h1>加餐五 · 深入理解协程基础元素</h1><div class="meta"><span>待补充讲师</span><span>2022-03-23</span><span>约 21 分钟</span></div></header>
+<div class="lesson-layout"><aside class="outline-wrap"><nav class="article-outline" aria-label="文章大纲"><h2>文章大纲</h2><a class="outline-h2" href="#outline-31ecdf3f">协程基础元素</a><a class="outline-h2" href="#outline-43de5482">Continuation 到底该怎么用？</a><a class="outline-h2" href="#outline-000be3cd">suspendCoroutineUninterceptedOrReturn</a><a class="outline-h2" href="#outline-d26cb759">小结</a><a class="outline-h2" href="#outline-4e4801b0">思考题</a></nav></aside><div class="article-content"><section class="lesson-audio"><div><span>Audio</span><strong>加餐五丨深入理解协程基础元素</strong></div><audio controls="" preload="metadata" src="assets/audio/kotlin-first-lesson-chapter-05-16.m4a"></audio></section><div><div><div><span><span><span>你好，我是朱涛。</span></span></span></div><div><span><span><span>在上一讲当中，我们深入研究了 Kotlin 挂起函数的原理，实际更多的是在了解协程的“基础层”。而接下来，我们将会开始研究协程启动的原理，探索协程的“中间层”。</span></span></span></div><div><span><span><span>在</span></span></span><a><span><span><span>第 26 讲</span></span></span></a><span><span><span>里，我曾提到过，Kotlin 的协程框架其实就是协程基础元素组合出来的框架。如果我们想要弄懂 Kotlin 协程，首先就要将它的“基础层”理解透彻。</span></span></span></div><div><span><span><span>所以今天，我还是决定来一次加餐，带你系统深入地认识一下 Kotlin 协程当中的基础元素。等你对协程的基础层有了深入认识以后，下节课研究协程启动原理就会轻松一些了。</span></span></span></div><h2 id="outline-31ecdf3f"><span><span><span>协程基础元素</span></span></span></h2><div><span><span><span>通过第 26 讲我们现在已经知道，Kotlin 协程的基础元素大致有这些：Continuation、SafeContinuation、CoroutineContext、CombinedContext、CancellationException、intrinsics。</span></span></span></div><div><img src="assets/082d2ecc24-image-1.jpg" loading="lazy" alt="加餐五丨深入理解协程基础元素配图"></div><div><span><span><span>其中的 CoroutineContext、CancellationException 我都已经介绍过了，另外的 CombinedContext，其实就是 CoroutineContext 的一个实现类，而 SafeContinuation 则是 Continuation 的实现类。</span></span></span></div><div><span><span><span>所以，在整个协程基础元素当中，我们最需要关心的，其实就是 </span></span></span><span><span><span><span>Continuation 和 intrinsics</span></span></span></span><span><span><span>。</span></span></span></div><div><span><span><span>在 intrinsics 里，有一个重要的高阶函数 suspendCoroutineUninterceptedOrReturn{}，我们后面会讲到它。至于 Continuation，虽然我们在前面已经介绍过它是什么，但还没有系统了解过它的用法，所以接下来，我们就先系统了解一下 Continuation 的两种用法。</span></span></span></div><h2 id="outline-43de5482"><span><span><span>Continuation 到底该怎么用？</span></span></span></h2><div><span><span><span>实际上，在</span></span></span><a><span><span><span>第 18 讲</span></span></span></a><span><span><span>里，我们就已经学过 Continuation 的其中一种用法了：</span></span></span></div><pre><code>// 代码段1
+
+suspend fun &lt;T : Any&gt; KtCall&lt;T&gt;.await(): T =
+    suspendCancellableCoroutine { continuation -&gt;
+        val call = call(object : Callback&lt;T&gt; {
+            override fun onSuccess(data: T) {
+                // 注意这里
+                continuation.resume(data)
+            }
+
+
+            override fun onFail(throwable: Throwable) {
+                // 注意这里
+                continuation.resumeWithException(throwable)
+            }
+        })
+
+        continuation.invokeOnCancellation {
+            println("Call cancelled!")
+            call.cancel()
+        }
+    }</code></pre><div><span><span><span>当我们想要实现挂起函数的时候，可以使用 suspendCoroutine{}、suspendCancellableCoroutine{}这两个高阶函数，在它们的 Lambda 当中，我们可以使用它暴露出来的 continuation 对象，把程序的执行结果或异常传到外部去。</span></span></span></div><div><span><span><span><span>这种方式，往往是用于实现挂起函数内部逻辑的。</span></span></span></span></div><div><span><span><span>比如说，我们可以用 suspendCoroutine{}写一个更加简单的例子：</span></span></span></div><pre><code>// 代码段2
+
+fun main() = runBlocking {
+    val result = getLengthSuspend("Kotlin")
+    println(result)
+}
+
+suspend fun getLengthSuspend(text: String): Int = suspendCoroutine { continuation-&gt;
+    thread {
+        // 模拟耗时
+        Thread.sleep(1000L)
+        continuation.resume(text.length)
+    }
+}
+
+/*
+输出结果：
+等待1秒
+6
+*/</code></pre><div><span><span><span>以上代码里，我们是使用 suspendCoroutine{}实现了挂起函数，然后在它的内部，我们使用 continuation.resume() 的方式，传出了挂起函数的返回值。</span></span></span></div><div><span><span><span>可能你会觉得奇怪，为什么以 continuation.resume() 这样异步的方式传出结果以后，挂起函数就能接收到结果呢？其实，当我们把 main() 函数当中的调用逻辑改一下，这一切就会清晰明了。</span></span></span></div><pre><code>// 代码段3
+
+// 变化在这里
+fun main()  {
+    val func = ::getLengthSuspend as (String, Continuation&lt;Int&gt;) -&gt; Any?
+
+    func("Kotlin", object: Continuation&lt;Int&gt;{
+        override val context: CoroutineContext
+            get() = EmptyCoroutineContext
+
+        override fun resumeWith(result: Result&lt;Int&gt;) {
+            println(result.getOrNull())
+        }
+    })
+
+    // 防止程序提前结束
+    Thread.sleep(2000L)
+}
+
+suspend fun getLengthSuspend(text: String): Int = suspendCoroutine { continuation-&gt;
+    thread {
+        // 模拟耗时
+        Thread.sleep(1000L)
+        continuation.resume(text.length)
+    }
+}
+/*
+输出结果：
+等待1秒
+6
+*/</code></pre><div><span><span><span>可以看到，在这段代码里，我们借助上节课的知识，把 getLengthSuspend() 这个函数强转成了带有 Continuation 的函数类型，然后通过匿名内部类的方式，创建了一个 Continuation 对象传了进去。最终，程序的执行结果和代码段 2 是一致的。</span></span></span></div><div><span><span><span>你还记得我在</span></span></span><a><span><span><span>第 15 讲</span></span></span></a><span><span><span>提到过的观点吗？</span></span></span></div><div><div><span><span><span>挂起函数的本质，就是 Callback!</span></span></span></div></div><div><span><span><span>那么现在，就让我们把 Continuation 改为 Callback，看看代码会变成什么样子。</span></span></span></div><pre><code>// 代码段4
+
+// 变化在这里
+fun main()  {
+    func("Kotlin", object: Callback&lt;Int&gt;{
+        override fun resume(result: Int) {
+            println(result)
+        }
+    })
+
+    // 防止程序提前结束
+    Thread.sleep(2000L)
+}
+
+fun func(text: String, callback: Callback&lt;Int&gt;) {
+    thread {
+        // 模拟耗时
+        Thread.sleep(1000L)
+        callback.resume(text.length)
+    }
+}
+
+interface Callback&lt;T&gt; {
+    fun resume(value: T)
+}
+
+/*
+输出结果：
+等待1秒
+6
+*/</code></pre><div><span><span><span>可见，当我们把 Continuation 改成 Callback 以后，整个代码就变成了我们曾经最熟悉的异步回调代码了。调用方，可以使用匿名内部类创建 Callback 用于接收异步结果；异步函数内部，使用 callback.resume() 将结果传出去。</span></span></span></div><div><span><span><span>综上所述，Kotlin 协程当中的 Continuation，作用其实就相当于 Callback，它既可以用于</span></span></span><span><span><span><span>实现挂起函数</span></span></span></span><span><span><span>，往挂起函数的外部传递结果；也可以用于</span></span></span><span><span><span><span>调用挂起函数</span></span></span></span><span><span><span>，我们可以创建 Continuation 的匿名内部类，来接收挂起函数传递出来的结果。</span></span></span></div><div><span><span><span>所以在这里，我们也就可以轻松回答上节课的思考题了：</span></span></span></div><div><div><span><span><span>我们都知道挂起函数是 Kotlin 协程里才有的概念，请问，Java 代码中可以调用 Kotlin 的挂起函数吗？比如，下面这个函数，我们可以在 Java 当中调用吗？</span></span></span></div></div><pre><code>// 代码段5
+
+// 需要在Java中调用的Kotlin挂起函数
+object SuspendFromJavaExample {
+    // 在Java当中如何调用这个方法？
+    suspend fun getUserInfo(id: Long):String {
+        delay(1000L)
+        return "Kotlin"
+    }
+}</code></pre><div><span><span><span>答案当然是肯定的，Java 当中调用挂起函数的方式，其实跟前面的代码段 3 是一样的：</span></span></span></div><pre><code>// 代码段6
+
+public static void main(String[] args) throws InterruptedException {
+    SuspendFromJavaExample.INSTANCE.getUserInfo(100L, new Continuation&lt;String&gt;() {
+        @NotNull
+        @Override
+        public CoroutineContext getContext() {
+            return EmptyCoroutineContext.INSTANCE;
+        }
+
+        @Override
+        public void resumeWith(@NotNull Object o) {
+            System.out.println(o+"");
+        }
+    });
+
+    // 防止程序提前结束
+    Thread.sleep(2000L);
+}
+
+/*
+输出结果
+Kotlin
+*/</code></pre><div><span><span><span>在上面的代码中，我们只是把代码段 3 的思想应用到了 Java 代码中而已，唯一需要</span></span></span><span><span><span><span>注意</span></span></span></span><span><span><span>的，就是：在 Java 当中访问 Kotlin 的 object 单例，是需要加上 INSTANCE 后缀的。这一点，我们在</span></span></span><a><span><span><span>第 5 讲</span></span></span></a><span><span><span>当中就已经了解过。</span></span></span></div><div><span><span><span>看到这里，可以发现，我们在实现挂起函数逻辑的时候，总是离不开 </span></span></span><span><span><span><span>suspendCoroutine{}、suspendCancellableCoroutine{}</span></span></span></span><span><span><span>。其实，这两个高阶函数也是 Kotlin 协程的基础元素，让我们来进一步认识这两个高阶函数。</span></span></span></div><h2 id="outline-000be3cd"><span><span><span>suspendCoroutineUninterceptedOrReturn</span></span></span></h2><div><span><span><span>实际上，suspendCoroutine{}、suspendCancellableCoroutine{}这两个高阶函数的实现原理是类似的，所以这里我们就主要解释下 suspendCoroutine{}。</span></span></span></div><div><span><span><span>如果你去看 suspendCoroutine{}的源代码，会发现它其实也在</span></span></span><a><span><span><span>Continuation.kt</span></span></span></a><span><span><span>这个文件当中。</span></span></span></div><pre><code>// 代码段7
+
+public interface Continuation&lt;in T&gt; {
+    public val context: CoroutineContext
+    public fun resumeWith(result: Result&lt;T&gt;)
+}
+
+public suspend inline fun &lt;T&gt; suspendCoroutine(crossinline block: (Continuation&lt;T&gt;) -&gt; Unit): T {
+
+    // 注意这里
+    return suspendCoroutineUninterceptedOrReturn { c: Continuation&lt;T&gt; -&gt;
+        val safe = SafeContinuation(c.intercepted())
+        block(safe)
+        safe.getOrThrow()
+    }
+}</code></pre><div><span><span><span>在上面的代码中，我们第一眼就能看到一个名字特别长的高阶函数 suspendCoroutineUninterceptedOrReturn{}。它其实就是实现 suspendCoroutine{}的关键。除了它之外，其他部分的代码都很好理解：</span></span></span></div><div><div><span><span><span>SafeContinuation(c.intercepted()) 这行代码的作用，就是把原本的 Continuation 包裹一遍。</span></span></span></div><div><span><span><span>block(safe) 这行代码，其实就是在调用 Lambda 当中的逻辑。</span></span></span></div><div><span><span><span>safe.getOrThrow()，就是在取出 block(safe) 的运行结果，我们在上节课也提到过，Continuation 当中是可以存储 result 的。这个 Result 可能是正确的结果，也可能是异常。</span></span></span></div></div><div><span><span><span>下面我们重点来看看 suspendCoroutineUninterceptedOrReturn{}这个高阶函数的作用。如果你去看它的源代码，那你看到的大概率会是这样的：</span></span></span></div><pre><code>// 代码段8
+
+public suspend inline fun &lt;T&gt; suspendCoroutineUninterceptedOrReturn(crossinline block: (Continuation&lt;T&gt;) -&gt; Any?): T {
+    contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
+    throw NotImplementedError("Implementation of suspendCoroutineUninterceptedOrReturn is intrinsic")
+}</code></pre><div><span><span><span>大部分人看到这样的代码可能都会觉得奇怪：</span></span></span><span><span><span><span>为什么这个高阶函数的源代码会是抛出异常呢？</span></span></span></span></div><div><span><span><span>在前面的加餐二“表达式思维”里，我其实有做过说明，如果你还有印象的话，应该就能理解这样的代码也是符合函数返回值的规范的。不过，如果它总是抛异常的话，我们用 suspendCoroutine{}写代码的时候，为什么不会产生崩溃呢？这个异常信息里的提示内容又是什么意思？</span></span></span></div><div><div><span><span><span>“Implementation of suspendCoroutineUninterceptedOrReturn is intrinsic.”</span></span></span></div></div><div><span><span><span>实际上，理解这句话的关键在于“intrinsic”这个单词，它有“固有”“本质”的意思，不过在上面这句话的语境下，这里的 intrinsic 其实是指编译器领域的一个术语，我们可以把它理解为“内建”。因此，上面我们看到的异常提示信息的意思就是：suspendCoroutineUninterceptedOrReturn 是一个编译器内建函数，</span></span></span><span><span><span><span>它是由 Kotlin 编译器来实现的</span></span></span></span><span><span><span>。</span></span></span></div><div><span><span><span>为了不偏离这节课的主题，这里我们就不去深究 Kotlin 编译器当中的逻辑了，感兴趣的话你可以自行研究这个</span></span></span><a><span><span><span>链接</span></span></span></a><span><span><span>。接下来，我们可以换一个角度，写一些 Demo 代码，通过运行调试来看看这个内建函数的功能和作用。</span></span></span></div><div><span><span><span>让我们先来看看 suspendCoroutineUninterceptedOrReturn 这个高阶函数的参数，它会接收一个 Lambda，类型是</span></span></span><span><span><span><span>(Continuation&lt;T&gt;) -&gt; Any?</span></span></span></span><span><span><span>，经过上节课的学习，你是否觉得这个类型有些眼熟呢？这里的“Any?”类型，其实就能代表当前这个挂起函数是否真正挂起。</span></span></span></div><div><span><span><span>因此，我们可以写出下面这样的代码：</span></span></span></div><pre><code>// 代码段9
+
+fun main() = runBlocking {
+    val result = testNoSuspendCoroutine()
+    println(result)
+}
+
+private suspend fun testNoSuspendCoroutine() = suspendCoroutineUninterceptedOrReturn&lt;String&gt; {
+        continuation -&gt;
+    return@suspendCoroutineUninterceptedOrReturn "Hello!"
+}
+
+/*
+输出结果：
+Hello!
+*/</code></pre><div><span><span><span>在这段代码中，我们直接使用 suspendCoroutineUninterceptedOrReturn 实现了挂起函数，并且，在它的 Lambda 当中，我们并没有调用 continuation.resume()，而是直接返回了结果“Hello!”。根据程序的运行结果，我们可以看到，在挂起函数的外部确实也可以接收到这个结果。</span></span></span></div><div><span><span><span>那么这时候，如果我们把上面的代码反编译一下，会看到类似这样的代码：</span></span></span></div><pre><code>    // 代码段10
+
+    private static final Object testNoSuspendCoroutine(Continuation $completion) {
+      int var2 = false;
+      if ("Hello!" == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
+         DebugProbesKt.probeCoroutineSuspended($completion);
+      }
+
+      return "Hello!";
+    }</code></pre><div><span><span><span>所以，从反编译的结果来看，testNoSuspendCoroutine() 这个函数其实就是一个</span></span></span><span><span><span><span>伪挂起函数</span></span></span></span><span><span><span>，它的内部并不会真正挂起。这样，当我们从外部调用这个函数的时候，这个函数会立即返回结果“Hello!”。</span></span></span></div><div><span><span><span>而这时候，我们可以再写一个真正的挂起函数：</span></span></span></div><pre><code>// 代码段11
+
+fun main() = runBlocking {
+    val result = testSuspendCoroutine()
+    println(result)
+}
+
+private suspend fun testSuspendCoroutine() = suspendCoroutineUninterceptedOrReturn&lt;String&gt; {
+    continuation -&gt;
+    thread {
+        Thread.sleep(1000L)
+        continuation.resume("Hello!")
+
+
+    }
+    return@suspendCoroutineUninterceptedOrReturn kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
+}
+
+/*
+输出结果：
+等待1秒
+Hello!
+*/</code></pre><div><span><span><span>这一次，我们并没有使用 return 返回结果，而是使用了 continuation.resume()。通过程序运行结果，我们可以看到挂起函数的外部也能接收到这个结果。然后我们也再来反编译一下，看看它对应的 Java 代码：</span></span></span></div><pre><code>// 代码段12
+
+private static final Object testSuspendCoroutine(Continuation $completion) {
+    int var2 = false;
+    // 1
+    ThreadsKt.thread$default(false, false, (ClassLoader)null, (String)null, 0, (Function0)(new CoroutineBasicElementsKt$testSuspendCoroutine$2$1($completion)), 31, (Object)null);
+    // 2
+    Object var10000 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
+    if (var10000 == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
+     DebugProbesKt.probeCoroutineSuspended($completion);
+    }
+    // 3
+    return var10000;
+}
+
+final class CoroutineBasicElementsKt$testSuspendCoroutine$2$1 extends Lambda implements Function0 {
+
+   final Continuation $it;
+
+   public Object invoke() {
+      this.invoke();
+      return Unit.INSTANCE;
+   }
+
+   public final void invoke() {
+      // 4
+      Thread.sleep(1000L);
+      Continuation var1 = this.$it;
+      String var2 = "Hello!";
+      Companion var3 = Result.Companion;
+      var1.resumeWith(Result.constructor-impl(var2));
+   }
+
+   CoroutineBasicElementsKt$testSuspendCoroutine$2$1(Continuation var1) {
+      super(0);
+      this.$it = var1;
+   }
+}</code></pre><div><span><span><span>以上代码中一共有 4 个注释，我们一个个看：</span></span></span></div><div><div><span><span><span>注释 1、4，创建了一个新的线程，执行了 thread{}当中的代码。</span></span></span></div><div><span><span><span>注释 2，将 var10000 赋值为 COROUTINE_SUSPENDED 这个挂起标志位。</span></span></span></div><div><span><span><span>注释 3，返回挂起标志位，代表 testSuspendCoroutine() 这个函数会真正挂起。</span></span></span></div></div><div><span><span><span>所以，这两个例子其实也从侧面证明了我们在上节课当中的结论：</span></span></span></div><div><div><span><span><span>由于 suspend 修饰的函数，既可能返回 CoroutineSingletons.COROUTINE_SUSPENDED，也可能返回实际结果，甚至可能返回 null，为了适配所有的可能性，CPS 转换后的函数返回值类型就只能是 Any? 了。</span></span></span></div></div><div><span><span><span>那么现在，我们也就可以总结出 </span></span></span><span><span><span><span>suspendCoroutineUninterceptedOrReturn{}这个高阶函数的作用</span></span></span></span><span><span><span>了：它可以将挂起函数当中的 Continuation 以参数的形式暴露出来，在它的 Lambda 当中，我们可以直接返回结果，这时候它就是一个“伪挂起函数”；或者，我们也可以返回 COROUTINE_SUSPENDED 这个挂起标志位，然后使用 continuation.resume() 传递结果。</span></span></span></div><div><span><span><span>相应的，suspendCoroutine{}、suspendCancellableCoroutine{}这两个高阶函数，只是对它的一种封装而已。</span></span></span></div><h2 id="outline-d26cb759"><span><span><span>小结</span></span></span></h2><div><span><span><span>这节课，我们学习了 Kotlin 协程当中与挂起函数密切相关的两个基础元素，Continuation、suspendCoroutine{}。</span></span></span></div><div><span><span><span>Continuation 是整个协程当中最重要的基础元素，我们可以将其看做是一个 Callback。它主要有两个使用场景，一种是在实现挂起函数的时候，用于传递挂起函数的执行结果；另一种是在调用挂起函数的时候，以匿名内部类的方式，用于接收挂起函数的执行结果。借助这种思路，我们也完全可以在 Java 当中调用挂起函数。</span></span></span></div><div><span><span><span>当我们想要实现挂起函数的时候，我们往往需要使用 suspendCoroutine{}、suspendCancellableCoroutine{}这两个高阶函数。它们两个都是对 suspendCoroutineUninterceptedOrReturn{}的封装，这个高阶函数的作用其实就是暴露挂起函数的 Continuation 对象。在它的 Lambda 当中，我们既可以直接返回执行结果，也可以返回 COROUTINE_SUSPENDED 这个挂起标志位，然后使用 continuation.resume() 传递结果。</span></span></span></div><h2 id="outline-4e4801b0"><span><span><span>思考题</span></span></span></h2><div><span><span><span>你觉得，suspendCoroutine{}、suspendCancellableCoroutine{}这两个高阶函数，它对比 suspendCoroutineUninterceptedOrReturn{}的优势在哪里？Kotlin 官方为什么要进行这样的封装呢？</span></span></span></div><div><span><span><span>欢迎在留言区分享你的答案，也欢迎你把今天的内容分享给更多的朋友。</span></span></span></div></div></div></div></div><nav class="pager" aria-label="章节导航"><a href="kotlin-first-lesson-chapter-05-14.html"><small>← 上一章</small><strong>图解Flow：原来你是只纸老虎？</strong></a><a class="next" href="kotlin-first-lesson-chapter-06-01.html"><small>下一章 →</small><strong>JavaAndroid开发者还会有未来吗？</strong></a></nav>
+<section class="comments"><header><div><p class="eyebrow">COMMUNITY NOTES</p><h2>读者评论</h2></div><span>0 条</span></header><p class="empty-comments">这篇文章暂时没有读者留言。</p></section></article></main><button class="back-to-top" type="button" aria-label="回到顶部">↑</button><script src="assets/app.js"></script></body></html>

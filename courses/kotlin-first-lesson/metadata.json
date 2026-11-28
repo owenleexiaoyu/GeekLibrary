@@ -1,0 +1,54 @@
+{
+  "id": "kotlin-first-lesson",
+  "title": "Kotlin 编程第一课",
+  "shortTitle": "Kotlin",
+  "glyph": "K",
+  "kicker": "Kotlin First Lesson",
+  "subtitle": "实战 + 源码，吃透 Kotlin 语法与协程",
+  "author": "朱涛",
+  "lessonAuthor": "朱涛",
+  "authorTitle": "Google 认证的 Kotlin、Android 开发者专家",
+  "category": "编程语言",
+  "status": "已完结",
+  "totalLessons": 50,
+  "availableLessons": 49,
+  "students": "6720",
+  "accent": "#b9ed86",
+  "introUrl": "https://time.geekbang.org/column/intro/100103401",
+  "summary": "通过 Java 对比、项目练习和源码分析，理解 Kotlin 核心语法与协程，建立协程思维，并将语言特性用于 Android 开发和架构设计。",
+  "benefits": [
+    "建立从语法到协程、源码与项目实践的系统学习路径",
+    "结合 Java 对比理解 Kotlin 核心特性及设计思路",
+    "掌握协程思维模型，完成从线程到协程的思维转换",
+    "通过 5 个实战项目理解 Kotlin 特性的应用场景"
+  ],
+  "audience": [
+    "具备 Java 基础、准备学习或迁移到 Kotlin 的开发者",
+    "已掌握基础语法，希望深入理解协程和底层实现的 Kotlin 开发者",
+    "希望将 Kotlin 与 Jetpack 用于实际项目的 Android 开发者"
+  ],
+  "modules": [
+    {
+      "number": "01",
+      "title": "基础篇",
+      "description": "学习核心语法、面向对象、高阶函数、扩展、委托、泛型、注解与反射，通过项目串联知识。"
+    },
+    {
+      "number": "02",
+      "title": "协程篇",
+      "description": "理解协程概念和思维模型，结合实战练习掌握协程的使用方式。"
+    },
+    {
+      "number": "03",
+      "title": "源码篇",
+      "description": "阅读 Kotlin 源码，理解语言与协程的实现原理，学习其中的实践方法。"
+    },
+    {
+      "number": "04",
+      "title": "Android 项目篇",
+      "description": "将 Kotlin 特性融入 Android 架构，结合 Jetpack 完成应用开发实践。"
+    }
+  ],
+  "authorBio": "朱涛，Google 认证的 Kotlin、Android 开发者专家，博客“Kotlin Jetpack 实战”作者，前陌陌内部创新业务 Android 负责人，自 2017 年起在实际工作中应用 Kotlin。",
+  "snapshotPath": "sources/kotlin-first-lesson/site-snapshot"
+}

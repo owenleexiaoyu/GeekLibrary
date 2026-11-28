@@ -5,9 +5,9 @@ const path = require('node:path');
 const vm = require('node:vm');
 const os = require('node:os');
 const root = path.resolve(__dirname, '..');
-const context = { require: require('node:module').createRequire(path.join(root, 'build-site.js')), __dirname: root, console, Buffer };
+const context = { require: require('node:module').createRequire(path.join(root, 'scripts/build-site.js')), __dirname: path.join(root, "scripts"), console, Buffer };
 vm.createContext(context);
-vm.runInContext(fs.readFileSync(path.join(root, 'build-site.js'), 'utf8').split('const sourceMap = readSourceMap();')[0], context);
+vm.runInContext(fs.readFileSync(path.join(root, 'scripts/build-site.js'), 'utf8').split('const sourceMap = readSourceMap();')[0], context);
 test('Markdown chapters preserve formatting, local images and numeric order', () => {
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-course-'));
   try {

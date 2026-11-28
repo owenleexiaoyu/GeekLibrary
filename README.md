@@ -1,89 +1,73 @@
 # Geek Library
 
-一个纯静态技术课程网站。仓库只保存网站代码、课程元数据和已经生成好的静态页面；原始课程 HTML 文件夹可以放在仓库外，通过本地私有配置读取。
+由 Node.js 构建的静态技术课程网站。课程配置、输入资料和网站产物分别存放，部署时只发布 `dist/`。
 
-## 本地构建
+## 目录
+
+```text
+courses.json                       有序课程 ID 列表
+courses/<id>/metadata.json          课程名称、讲师、简介、模块和输入路径
+courses/<id>/structure.json         分组、章节顺序、标题和稳定 ID
+sources/<id>/                      原始资料，保持原有格式
+sources/<id>/site-snapshot/         缺少原始资料时使用的既有阅读页快照
+scripts/                           注册、解析、构建脚本和共享配置读取
+templates/library/                首页、课程介绍页样式与交互
+templates/site/                   阅读页样式与交互
+dist/                              全部网站产物，可删除后重新构建
+tests/                             构建行为测试
+```
+
+`dist/` 内保留网站 URL 层级：`index.html` 为首页，`courses/<id>/index.html` 为课程介绍，`courses/<id>/site/` 为章节阅读页和资源。不要直接修改产物；下一次构建会覆盖它们。
+
+## 构建和预览
 
 ```bash
 npm install
-cp course-sources.example.json course-sources.json
+npm test
 npm run build
 npm run serve
 ```
 
-访问 `http://localhost:4173`。
+访问 `http://127.0.0.1:4173`。预览服务由 `scripts/serve.js` 提供，无需在线下载依赖；课程目录缺少末尾 `/` 时自动跳转到规范地址，确保相对链接正确，并支持音频分段读取。预览服务仅暴露 `dist/`，不会暴露配置和原始资料。仓库保留生成产物，静态服务器不需要 Node.js。
 
-`course-sources.json` 是本机私有文件，已经加入 `.gitignore`。它用于告诉构建器每门课程的原始 HTML 文件夹在哪里：
+## 输入资料
+
+当前提示词课程从 `sources/mastering-llm-prompting/` 中的 Markdown 与配图构建。支持 HTML、Markdown、PDF 和配套音频；PDF 提取需要 Python 与 pdfplumber。
+
+Android、Flutter、Kotlin 暂时缺少配置可用的原始资料，已把迁移前的阅读页完整保存在各自的 `site-snapshot/`。这些是迁移快照输入，不是可编辑的文章源数据。构建会明确报告使用快照，并应用公共阅读页样式和交互；正文与页面内讲师信息维持快照内容。课程介绍仍从 metadata.json 生成。快照可确保从空 `dist/` 重建，不依赖旧产物。
+
+如有仓库外的原始资料，复制配置示例：
+
+```bash
+cp course-sources.example.json course-sources.json
+```
+
+设置对应课程的 `sourcePath`，例如：
 
 ```json
 {
-  "android-mastery": {
-    "sourcePath": "/Users/you/Courses/27-Android开发高手课"
-  }
+  "kotlin-first-lesson": { "sourcePath": "/absolute/path/to/Kotlin课程" }
 }
 ```
 
-## 添加课程
+`course-sources.json` 不提交 Git。路径优先级：本机配置中的 sourcePath → metadata.json 中的 sourcePath → metadata.json 中的 snapshotPath。配置了有效原始资料后，会按 structure.json 重新生成阅读页；请先确认源资料覆盖全部章节。
 
-添加一门课程需要两类信息：
-
-1. 原始课程 HTML 文件夹路径：写入本地的 `course-sources.json`。
-2. 课程首页信息地址：写入 `courses.json` 的 `introUrl`，并把介绍页需要展示的标题、讲师、摘要、模块等信息整理成结构化字段。
-
-可以用命令生成或更新课程配置：
+## 添加和维护课程
 
 ```bash
-npm run add-course -- --source "/Users/you/Courses/某门课程" --intro "https://time.geekbang.org/column/intro/xxxx"
+npm run add-course -- --id example-course --source "/absolute/path/to/course" --intro "https://example.com/course"
 ```
 
-这个命令会：
+命令登记课程 ID、生成 `courses/<id>/metadata.json`，并把资料路径写入本机配置；仅尝试从介绍页读取标题和摘要，其他信息需人工整理。随后执行 `npm run build`。缺少 structure.json 时，构建器可根据子目录中的课程文件或根层 Markdown 生成初稿，之后应检查章节顺序和分组。
 
-- 把本地源路径写入 `course-sources.json`。
-- 把课程介绍地址写入 `courses.json`。
-- 尽量从介绍页读取标题和摘要；如果网页限制抓取，会生成“待补充”的课程骨架，之后手动补齐即可。
+- 修改课程展示信息：编辑 `courses/<id>/metadata.json`。
+- 修改章节组织：编辑 `courses/<id>/structure.json`。
+- 修改正文：编辑原始资料。
+- 修改页面布局：编辑 scripts 中的页面生成模板。
+- 修改样式与交互：编辑 `templates/`。
 
-`courses.json` 是会提交到 GitHub 的公开配置；`course-sources.json` 不提交。这样仓库可以保持为纯网站项目，不携带原始课程文件。
+构建按 HTML、Markdown、PDF 的优先级读取章节，缺少正文会报告并生成提示页。构建会重新解析资料，仅在输出变化时写盘；目前没有解析缓存。构建清理不再属于目录的章节页面，未自动清理所有废弃资源。介绍页可读数量优先使用构建后的 course-manifest.json。
 
-## 增量构建
+## 部署
 
-构建器会为每门课程在输出目录保存 `.build-cache.json`：
-
-- 源 HTML 内容没变：直接复用上次提取的正文、图片和评论。
-- 新增或修改 HTML：只重新解析变化的文件。
-- 最终 HTML 内容没变：不会重复写盘。
-- 删除源 HTML：对应的旧章节页面会被清理。
-
-## 目录约定
-
-当前 Android 课程输出到：
-
-```text
-courses/android-mastery/
-├── index.html
-└── site/
-    ├── index.html
-    ├── android-mastery-chapter-01-01.html
-    └── assets/
-```
-
-原始目录 `27-Android开发高手课/` 不再是网站目录。你可以把它移到仓库外，然后把新路径写到 `course-sources.json`。
-
-## GitHub 在线浏览
-
-推荐使用 GitHub Pages，直接发布仓库根目录：
-
-1. 把构建后的静态页面提交到 GitHub。
-2. 进入仓库 Settings → Pages。
-3. Source 选择 `Deploy from a branch`。
-4. Branch 选择主分支，目录选择 `/ (root)`。
-5. 保存后访问 GitHub Pages 给出的地址。
-
-因为原始课程 HTML 不在仓库里，GitHub 上不需要重新构建课程内容；它只负责托管已经生成好的静态站点。
-
-## Markdown 课程
-
-`mastering-llm-prompting` 保留原始 Markdown 和 `assets/` 配图，通过 `courses.json` 中的相对 `sourcePath` 直接构建，无需额外的本地路径配置。原始文件不会被改写，阅读页面生成在 `courses/mastering-llm-prompting/site/`，课程介绍页为该课程目录下的 `index.html`。
-
-课程信息依据 `0-小册介绍.md` 与开篇词整理，目录保留原文顺序：23 节正文、3 篇加餐及 1 篇小册介绍，共 27 篇可读内容。介绍文件中的“共计 23 节”指原正文，不含后续加餐和介绍。学习人数未提供，因此显示为 `-`。
-
-Markdown 构建支持标题、列表、引用、表格、代码块和本地配图。已有 `course-structure.json` 时按其分组与顺序生成；没有时可自动识别源目录根层的 `.md` 文件。运行 `node --test tests/markdown-course.test.js` 可验证 Markdown 构建行为。
+只发布 `dist/`。GitHub Pages 应使用 GitHub Actions 上传该目录，或将其内容发布到专用分支；不要再把仓库根目录直接作为站点。`dist/.nojekyll` 由构建生成。本次目录调整不会自动更改远端 Pages 设置。
